@@ -6,7 +6,7 @@
   tasks:
    - name: set timezone
      shell:
-      set-timezone "{{ timezone }}"
+      timedatectl set-timezone "{{ timezone }}"
   - name: restart chrony
     shell:
       systemctl restart chronyd
