@@ -1,6 +1,6 @@
 ---
 - name: Running Linux Prerequisites
-  hosts: linux
+  hosts: local
   vars:
     timezone: "{{ timezone }}"
     prereqpath: "{{ prereqpath }}"
