@@ -2,11 +2,11 @@
 - name: installing linux
   hosts: local
   vars: 
-   timezone: "{{ timezone }}"
+     timezone: "{{ timezone }}"
   tasks:
    - name: set timezone
-     shell:
-       timedatectl set-timezone "{{ timezone }}"
+    shell:
+	  timedatectl set-timezone "{{ timezone }}"
   - name: restart chrony
     shell:
       systemctl restart chronyd
