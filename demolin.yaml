@@ -1,28 +1,41 @@
 ---
-- name: installing linux
-  hosts: local
-  vars: 
+- name: Running Linux Prerequisites
+  hosts: linux
+  vars:
     timezone: "{{ timezone }}"
+    prereqpath: "{{ prereqpath }}"
+    dockerfilename: "{{ dockerfilename }}"
+    dockercomposefilename: "{{ dockercomposefilename }}"
+    dialogfilename: "{{ dialogfilename }}"
+    jdkfilename: "{{ jdkfilename }}"
   tasks:
-   - name: set timezone
-     shell:
-       timedatectl set-timezone "{{ timezone }}"
-   - name: restart chrony
-     shell:
-       systemctl restart chronyd
-   - name: stop firewalld
-     shell:
-       systemctl stop firewalld
-   - name: disable firewall
-     shell:
-       systemctl disable firewalld
-   - name: installing docker
-     shell: |
-       yum install docker -y
-       systemctl enable docker
-       systemctl start docker
-   - name: installing dialog
-     shell: 
-       yum install dialog -y
-   - debug:
-       msg: installation completed
+        - name: set timezone
+          shell:
+            timedatectl set-timezone "{{ timezone }}"
+        - name: restart chrony service
+          shell:
+            systemctl restart chronyd
+        - name: verify chrony is talking to ntp
+          shell:
+            chronyc sources -v
+        - name: Stop firewall
+          shell:
+            systemctl stop firewalld
+        - name: disable firewall
+          shell:
+            systemctl disable firewalld
+        - name: Installing Docker, Dialog and jdk
+          shell: |
+            cd {{ prereqpath }}
+            tar xzvf "{{ prereqpath }}/{{ dockerfilename }}"
+            cp docker/* /usr/bin/
+            cp "{{ prereqpath }}/docker.s*" /etc/systemd/system
+            systemctl enable docker
+            systemctl start docker
+            cp "{{ prereqpath }}/{{ dockercomposefilename }}" /usr/sbin/docker-compose
+            chmod +x /usr/sbin/docker-compose
+            rpm -i {{ dialogfilename }}
+            rpm -ivh {{ jdkfilename }}
+        - name: Linux Prereqs complete
+          debug:
+            msg: "Automated steps of linux prereqs are complete"
