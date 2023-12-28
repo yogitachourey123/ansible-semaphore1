@@ -18,11 +18,11 @@
         systemctl disable firewalld
     - name: installing docker
       shell: |
-    	yum install docker -y
-    	systemctl enable docker
-    	systemctl start docker
+    	  yum install docker -y
+    	  systemctl enable docker
+    	  systemctl start docker
   	-name: installing Dialog
   	 shell:
-    	yum install dailog -y
+    	  yum install dailog -y
     - debug:
         msg: Folder already exists
