@@ -2,27 +2,27 @@
 - name: installing linux
   hosts: local
   vars: 
-     timezone: "{{ timezone }}"
+    timezone: "{{ timezone }}"
   tasks:
    - name: set timezone
      shell:
-      timedatectl set-timezone "{{ timezone }}"
-  - name: restart chrony
-    shell:
-      systemctl restart chronyd
-  - name: stop firewalld
-    shell:
-      systemctl stop firewalld
-  - name: disable firewall
-    shell:
-      systemctl disable firewalld
-  - name: installing docker
-    shell: |
-      yum install docker -y
-      systemctl enable docker
-      systemctl start docker
-  -name: installing dialog
-    shell: 
-      yum install dialog -y
+       timedatectl set-timezone "{{ timezone }}"
+   - name: restart chrony
+     shell:
+       systemctl restart chronyd
+   - name: stop firewalld
+     shell:
+       systemctl stop firewalld
+   - name: disable firewall
+     shell:
+       systemctl disable firewalld
+   - name: installing docker
+     shell: |
+       yum install docker -y
+       systemctl enable docker
+       systemctl start docker
+   - name: installing dialog
+     shell: 
+       yum install dialog -y
   - debug:
       msg: installation completed
