@@ -25,4 +25,32 @@
   	 shell:
     	  yum install dailog -y
     - debug:
+        msg: Folder already exists---
+- name: creating direcory and file
+  hosts: local
+  vars:
+    timezone: "{{ timezone }}"
+  tasks:
+    - name: Set TimeZone
+      shell: 
+        timedatectl set-timezone "{{ timezone }}"
+    - name: Restart chrony
+      shell: 
+        systemctl restart chronyd
+    - name: Stop firewall
+      shell: 
+        systemctl stop firewalld
+    - name: Disable firewall
+      shell: 
+        systemctl disable firewalld
+    - name: installing docker
+      shell: |
+    	  yum install docker -y
+    	  systemctl enable docker
+    	  systemctl start docker
+  	-name: installing Dialog
+  	 shell:
+    	  yum install dailog -y
+    - debug:
         msg: Folder already exists
+
